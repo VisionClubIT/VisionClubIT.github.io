@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Name Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin: 20px;
+        }
+        input, button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+        canvas {
+            display: none;
+            margin-top: 20px;
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Enter Your Name</h2>
+    <input type="text" id="nameInput" placeholder="Type your name here">
+    <button onclick="generateImage()">Generate</button>
+    <br>
+    <canvas id="canvas"></canvas>
+    <br>
+    <button id="downloadBtn" style="display: none;" onclick="downloadImage()">Download</button>
+
+    <script>
+        function generateImage() {
+            let name = document.getElementById("nameInput").value;
+            if (!name.trim()) {
+                alert("Please enter a name.");
+                return;
+            }
+
+            let imageUrl = "https://raw.githubusercontent.com/VisionClubIT/Ana-hunak-/2ae33014d144eb91d4dcc05aa7996215a423087f/IMG_3521.png";
+            let canvas = document.getElementById("canvas");
+            let ctx = canvas.getContext("2d");
+            let img = new Image();
+
+            img.crossOrigin = "anonymous"; 
+            img.src = imageUrl;
+            img.onload = function () {
+                canvas.width = img.width;
+                canvas.height = img.height;
+                ctx.drawImage(img, 0, 0);
+                
+                // Text settings
+                ctx.font = "50px Arial";
+                ctx.fillStyle = "white"; 
+                ctx.textAlign = "center";
+                ctx.fillText(name, canvas.width / 2, 80); // Adjust position here
+                
+                canvas.style.display = "block"; 
+                document.getElementById("downloadBtn").style.display = "block"; 
+            };
+        }
+
+        function downloadImage() {
+            let canvas = document.getElementById("canvas");
+            let link = document.createElement("a");
+            link.download = "custom_image.png";
+            link.href = canvas.toDataURL("image/png");
+            link.click();
+        }
+    </script>
+
+</body>
+</html>
